@@ -1,0 +1,83 @@
+syntax = "v1"
+
+service atm {
+	@doc(
+		summary: "Ping"
+	)
+	@handler Ping
+	get /api/atm/ping (PingRequest) returns (PingResponse)
+	
+	@doc(
+		summary: "用户注册"
+	)
+	@handler UserRegister
+	post /api/atm/user/register (UserRegisterRequest) returns (UserRegisterResponse)
+	
+	@doc(
+		summary: "用户登录"
+	)
+	@handler UserLogin
+	post /api/atm/user/login (UserLoginRequest) returns (UserLoginResponse)
+}
+
+@server (
+	jwt:Auth
+)
+service atm {
+	@doc(
+		summary: "用户信息"
+	)
+	@handler UserInfo
+	get /api/atm/user/info (UserInfoRequest) returns (UserInfoResponse)
+}
+
+type (
+	UserLoginRequest {
+		AccountNumber string `json:"account_number"`
+		Password      string `json:"password"`
+	}
+	UserLoginResponse {
+		UserId        int64  `json:"user_id"`
+		AccountNumber string `json:"account_number"`
+		Token         string `json:"token"`
+	}
+)
+
+type (
+	UserInfoRequest {
+	}
+
+	UserInfoResponse {
+		User *User `json:"user"`
+	}
+)
+
+type (
+	UserRegisterRequest {
+		Name     string `json:"name"`
+		BankName string `json:"bank_name"`
+		Phone    string `json:"phone"`
+		Password string `json:"password"`
+	}
+	UserRegisterResponse {
+		UserId        int64  `json:"user_id"`
+		AccountNumber string `json:"account_number"`
+	}
+)
+
+type (
+	PingRequest {
+	}
+	PingResponse {
+		Message string `json:"message"`
+	}
+)
+
+type User {
+	Id            int64  `json:"id"`
+	AccountNumber string `json:"account_number"`
+	Name          string `json:"name"`
+	BankName      string `json:"bank_name"`
+	Phone         string `json:"phone"`
+	Balance       int64  `json:"balance"`
+}

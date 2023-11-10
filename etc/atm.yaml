@@ -1,0 +1,20 @@
+Name: atm
+Host: 0.0.0.0
+Port: 8888
+
+Mode: dev
+
+Log:
+    Encoding: plain
+    Stat: false
+
+MySQLConf:
+    DataSource: root:liuyt777@tcp(101.200.37.213:3306)/atm?parseTime=true
+
+RedisConf:
+    Host: 101.200.37.213:6379
+    Pass: "liuyt777"
+
+Auth:
+    AccessSecret: abcdefghi
+    AccessExpire: 604800 # 1 week
