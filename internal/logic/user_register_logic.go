@@ -41,6 +41,8 @@ func (l *UserRegisterLogic) UserRegister(req *types.UserRegisterRequest) (resp *
 		AccountNumber: cardNumber,
 		Password:      utils.EncryptPassword(req.Password),
 		BankName:      req.BankName,
+		IdCard:        req.IdCard,
+		Phone:         req.Phone,
 	})
 
 	resp = new(types.UserRegisterResponse)

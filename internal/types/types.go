@@ -21,6 +21,7 @@ type UserInfoResponse struct {
 
 type UserRegisterRequest struct {
 	Name     string `json:"name"`
+	IdCard   string `json:"id_card"`
 	BankName string `json:"bank_name"`
 	Phone    string `json:"phone"`
 	Password string `json:"password"`
