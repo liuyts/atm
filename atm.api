@@ -20,8 +20,8 @@ service atm {
 	post /api/atm/user/login (UserLoginRequest) returns (UserLoginResponse)
 }
 
-@server (
-	jwt:Auth
+@server(
+	jwt: Auth
 )
 service atm {
 	@doc(
@@ -29,7 +29,54 @@ service atm {
 	)
 	@handler UserInfo
 	get /api/atm/user/info (UserInfoRequest) returns (UserInfoResponse)
+	
+	@doc(
+		summary: "存钱"
+	)
+	@handler PutMoney
+	post /api/atm/money/put (PutMoneyRequest) returns (PutMoneyResponse)
+	
+	@doc(
+		summary: "取钱"
+	)
+	@handler TakeMoney
+	post /api/atm/money/take (TakeMoneyRequest) returns (TakeMoneyResponse)
+	
+	@doc(
+		summary: "查看流水"
+	)
+	@handler GetTransactionMoney
+	get /api/atm/money/get_transaction (GetTransactionMoneyRequest) returns (GetTransactionMoneyResponse)
 }
+
+type (
+	GetTransactionMoneyRequest {
+		PageNum  int64 `form:"page_num" vd:"$>0;msg:'页码不合法'"`
+		PageSize int64 `form:"page_size" vd:"$>0&&$<100;msg:'页大小不合法'"`
+	}
+	GetTransactionMoneyResponse {
+		Total        int64          `json:"total"`
+		Transactions []*Transaction `json:"transactions"`
+	}
+)
+
+type (
+	PutMoneyRequest {
+		Amount float64 `json:"amount" vd:"$>0&&$<1000000;msg:'存款金额不合法'"`
+	}
+	PutMoneyResponse {
+		Balance float64 `json:"balance"`
+	}
+)
+
+type (
+	TakeMoneyRequest {
+		Amount float64 `json:"amount" vd:"$>0&&$<1000000;msg:'取款金额不合法'"`
+	}
+	TakeMoneyResponse {
+		Balance float64 `json:"balance"`
+	}
+)
 
 type (
 	UserLoginRequest {
@@ -74,11 +121,19 @@ type (
 	}
 )
 
+type Transaction {
+	Id          int64   `json:"id"`
+	UserId      int64   `json:"user_id"`
+	Amount      float64 `json:"amount"`
+	Description string  `json:"description"`
+	CreateTime  string  `json:"create_time"`
+}
+
 type User {
-	Id            int64  `json:"id"`
-	AccountNumber string `json:"account_number"`
-	Name          string `json:"name"`
-	BankName      string `json:"bank_name"`
-	Phone         string `json:"phone"`
-	Balance       int64  `json:"balance"`
+	Id            int64   `json:"id"`
+	AccountNumber string  `json:"account_number"`
+	Name          string  `json:"name"`
+	BankName      string  `json:"bank_name"`
+	Phone         string  `json:"phone"`
+	Balance       float64 `json:"balance"`
 }

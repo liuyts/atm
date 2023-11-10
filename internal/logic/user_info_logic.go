@@ -27,7 +27,7 @@ func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfo
 }
 
 func (l *UserInfoLogic) UserInfo(req *types.UserInfoRequest) (resp *types.UserInfoResponse, err error) {
-	meId, err := l.ctx.Value(consts.UserId).(json.Number).Int64()
+	meId, _ := l.ctx.Value(consts.UserId).(json.Number).Int64()
 
 	dbUser, err := l.svcCtx.UserModel.FindOne(l.ctx, meId)
 	if err != nil {

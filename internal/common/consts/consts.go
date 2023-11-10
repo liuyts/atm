@@ -1,12 +1,18 @@
 package consts
 
+import "errors"
+
 var (
 	// 错误码
-	Success             = 0
-	Error               = 1
-	ErrBankNameNotFound = "不支持该银行"
+	Success = 0
+	Error   = 1
 
 	UserId = "userId"
+
+	TransactionTypePut      = "存款"
+	TransactionTypeTake     = "取款"
+	TransactionTypeTransfer = "转账"
+	TransactionTypePay      = "支付"
 
 	// BankNameNum 银行名称标识
 	BankNameNum = map[string]string{
@@ -25,4 +31,9 @@ var (
 		"平安银行":   "6228",
 		"兴业银行":   "6229",
 	}
+)
+
+var (
+	ErrBankNameNotFound = errors.New("不支持该银行")
+	ErrBalanceNotEnough = errors.New("余额不足")
 )

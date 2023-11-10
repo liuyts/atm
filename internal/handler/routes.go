@@ -37,6 +37,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/api/atm/user/info",
 				Handler: UserInfoHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/atm/money/put",
+				Handler: PutMoneyHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/atm/money/take",
+				Handler: TakeMoneyHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/api/atm/money/get_transaction",
+				Handler: GetTransactionMoneyHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
