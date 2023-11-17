@@ -47,7 +47,22 @@ service atm {
 	)
 	@handler GetTransactionMoney
 	get /api/atm/money/get_transaction (GetTransactionMoneyRequest) returns (GetTransactionMoneyResponse)
+	
+	@doc(
+		summary: "转账"
+	)
+	@handler TransferMoney
+	post /api/atm/money/transfer (TransferMoneyRequest) returns (TransferMoneyResponse)
 }
+
+type (
+	TransferMoneyRequest {
+		ToAccountNumber string  `json:"to_account_number"`
+		Amount          float64 `json:"amount" vd:"$>0&&$<1000000;msg:'转账金额不合法'"`
+	}
+	TransferMoneyResponse {
+	}
+)
 
 type (
 	GetTransactionMoneyRequest {
@@ -62,7 +77,7 @@ type (
 
 type (
 	PutMoneyRequest {
-		Amount float64 `json:"amount" vd:"$>0&&$<1000000;msg:'存款金额不合法'"`
+		Amount float64 `json:"amount" vd:"$>0&&$<1000000;msg:'转账金额不合法'"`
 	}
 	PutMoneyResponse {
 		Balance float64 `json:"balance"`
@@ -125,6 +140,7 @@ type Transaction {
 	Id          int64   `json:"id"`
 	UserId      int64   `json:"user_id"`
 	Amount      float64 `json:"amount"`
+	Type        string  `json:"type"`
 	Description string  `json:"description"`
 	CreateTime  string  `json:"create_time"`
 }

@@ -1,6 +1,8 @@
 package consts
 
-import "errors"
+import (
+	"errors"
+)
 
 var (
 	// 错误码
@@ -34,6 +36,8 @@ var (
 )
 
 var (
-	ErrBankNameNotFound = errors.New("不支持该银行")
-	ErrBalanceNotEnough = errors.New("余额不足")
+	ErrBankNameNotFound    = errors.New("不支持该银行")
+	ErrBalanceNotEnough    = errors.New("余额不足")
+	ErrInsufficientBalance = errors.New("余额不足")
+	ErrTransferToSelf      = errors.New("不能转账给自己")
 )

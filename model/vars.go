@@ -1,5 +1,7 @@
 package model
 
-import "github.com/zeromicro/go-zero/core/stores/sqlx"
+import (
+	"errors"
+)
 
-var ErrNotFound = sqlx.ErrNotFound
+var ErrNotFound = errors.New("用户不存在")
