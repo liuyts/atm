@@ -2,7 +2,7 @@
 package types
 
 type ChangePasswordRequest struct {
-	NewPassword string `json:"new_password" vd:"len($)>6;msg:'密码长度最少6位'"`
+	NewPassword string `json:"new_password" vd:"len($)>=6;msg:'密码长度最少6位'"`
 }
 
 type ChangePasswordResponse struct {
