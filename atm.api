@@ -31,6 +31,12 @@ service atm {
 	get /api/atm/user/info (UserInfoRequest) returns (UserInfoResponse)
 	
 	@doc(
+		summary: "修改密码"
+	)
+	@handler ChangePassword
+	post /api/atm/user/change_password (ChangePasswordRequest) returns (ChangePasswordResponse)
+	
+	@doc(
 		summary: "存钱"
 	)
 	@handler PutMoney
@@ -54,6 +60,14 @@ service atm {
 	@handler TransferMoney
 	post /api/atm/money/transfer (TransferMoneyRequest) returns (TransferMoneyResponse)
 }
+
+type (
+	ChangePasswordRequest {
+		NewPassword string `json:"new_password" vd:"len($)>6;msg:'密码长度最少6位'"`
+	}
+	ChangePasswordResponse {
+	}
+)
 
 type (
 	TransferMoneyRequest {
