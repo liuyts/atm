@@ -38,7 +38,7 @@ func (l *UserRegisterLogic) UserRegister(req *types.UserRegisterRequest) (resp *
 	res, err := l.svcCtx.UserModel.Insert(l.ctx, &model.User{
 		Name:          req.Name,
 		AccountNumber: cardNumber,
-		Password:      utils.EncryptPassword(req.Password),
+		Password:      utils.EncryptPassword(req.Password), // 对密码进行hash加密
 		BankName:      req.BankName,
 		IdCard:        req.IdCard,
 		Phone:         req.Phone,

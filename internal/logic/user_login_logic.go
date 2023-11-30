@@ -30,6 +30,7 @@ func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLog
 }
 
 func (l *UserLoginLogic) UserLogin(req *types.UserLoginRequest) (resp *types.UserLoginResponse, err error) {
+	// 根据银行卡号查询用户信息
 	dbUser, err := l.svcCtx.UserModel.FindOneByAccountNumber(l.ctx, req.AccountNumber)
 	if errors.Is(err, model.ErrNotFound) {
 		return nil, errors.New("银行卡号不存在")
@@ -37,10 +38,11 @@ func (l *UserLoginLogic) UserLogin(req *types.UserLoginRequest) (resp *types.Use
 	if err != nil {
 		return nil, err
 	}
+	// 将用户输入的密码进行hash加密后与数据库中的密码进行比对
 	if !utils.VerifyPassword(req.Password, dbUser.Password) {
 		return nil, errors.New("密码错误，请重新输入")
 	}
-
+	// 生成token，登录成功
 	auth := l.svcCtx.Config.Auth
 	now := time.Now().Unix()
 	accessToken, _ := l.getJwtToken(auth.AccessSecret, now, auth.AccessExpire, dbUser.Id)

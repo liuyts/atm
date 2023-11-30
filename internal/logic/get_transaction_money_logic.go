@@ -28,7 +28,7 @@ func NewGetTransactionMoneyLogic(ctx context.Context, svcCtx *svc.ServiceContext
 
 func (l *GetTransactionMoneyLogic) GetTransactionMoney(req *types.GetTransactionMoneyRequest) (resp *types.GetTransactionMoneyResponse, err error) {
 	meId, _ := l.ctx.Value(consts.UserId).(json.Number).Int64()
-
+	// 获取流水记录
 	count, transactions, err := l.svcCtx.TransactionModel.FindPage(l.ctx, meId, req.PageNum, req.PageSize)
 	if err != nil {
 		l.Errorf("分页查询流水记录失败，err：%v")
