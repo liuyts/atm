@@ -42,6 +42,7 @@ func (l *UserRegisterLogic) UserRegister(req *types.UserRegisterRequest) (resp *
 		BankName:      req.BankName,
 		IdCard:        req.IdCard,
 		Phone:         req.Phone,
+		DailyLimit:    5000,
 	})
 
 	resp = new(types.UserRegisterResponse)

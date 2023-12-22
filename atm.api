@@ -24,6 +24,18 @@ service atm {
 	)
 	@handler ChangeStatus
 	post /api/atm/user/status (ChangeStatusRequest) returns (ChangeStatusResponse)
+	
+	@doc (
+		summary :"获取用户列表"
+	)
+	@handler UserList
+	get /api/atm/user/list (UserListRequest) returns (UserListResponse)
+	
+	@doc (
+		summary :"更新用户信息"
+	)
+	@handler UpdateUser
+	post /api/atm/user/update (UpdateUserRequest) returns (UpdateUserResponse)
 }
 
 @server(
@@ -72,6 +84,32 @@ service atm {
 	@handler GetBalance
 	get /api/atm/user/info/balance (GetBalanceRequest) returns (GetBalanceResponse)
 }
+
+type (
+	UpdateUserRequest {
+		Id            int64   `json:"id"`
+		Name          string  `json:"name"`
+		AccountNumber string  `json:"account_number"`
+		IdCard        string  `json:"id_card"`
+		BankName      string  `json:"bank_name"`
+		Phone         string  `json:"phone"`
+		DailyLimit    float64 `json:"daily_limit"`
+		Status        string  `json:"status"`
+	}
+	UpdateUserResponse {
+	}
+)
+
+type (
+	UserListRequest {
+		PageNum  int `form:"page_num" vd:"$>0;msg:'页码不合法'"`
+		PageSize int `form:"page_size" vd:"$>0&&$<100;msg:'页大小不合法'"`
+	}
+	UserListResponse {
+		Total int     `json:"total"`
+		Users []*User `json:"users"`
+	}
+)
 
 type (
 	ChangeStatusRequest {
@@ -153,6 +191,7 @@ type (
 
 type (
 	UserInfoRequest {
+		UserId int64 `form:"user_id"`
 	}
 
 	UserInfoResponse {
@@ -196,6 +235,9 @@ type User {
 	AccountNumber string  `json:"account_number"`
 	Name          string  `json:"name"`
 	BankName      string  `json:"bank_name"`
+	IdCard        string  `json:"id_card"`
 	Phone         string  `json:"phone"`
 	Balance       float64 `json:"balance"`
+	DailyLimit    float64 `json:"daily_limit"`
+	Status        string  `json:"status"`
 }

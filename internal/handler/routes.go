@@ -34,6 +34,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/api/atm/user/status",
 				Handler: ChangeStatusHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/api/atm/user/list",
+				Handler: UserListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/atm/user/update",
+				Handler: UpdateUserHandler(serverCtx),
+			},
 		},
 	)
 

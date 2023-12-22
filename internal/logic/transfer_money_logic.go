@@ -7,8 +7,10 @@ import (
 	"ATM/model"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -45,6 +47,16 @@ func (l *TransferMoneyLogic) TransferMoney(req *types.TransferMoneyRequest) (res
 
 	if toUser.Id == meId {
 		return nil, consts.ErrTransferToSelf
+	}
+
+	// 查看每日限额
+	date := time.Now().Format(time.DateOnly)
+	dailyLimit, err := l.svcCtx.DailyLimitModel.FindByUserIdDate(l.ctx, meId, date)
+	if err != nil {
+		return
+	}
+	if req.Amount > dailyLimit.Limit {
+		return nil, errors.New("转账额度超过每日限额")
 	}
 
 	// 开启事务转账

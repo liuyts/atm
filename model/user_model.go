@@ -13,7 +13,7 @@ type (
 	// and implement the added methods in customUserModel.
 	UserModel interface {
 		userModel
-		FindPage(ctx context.Context, pageNum int, pageSize int) ([]*User, error)
+		FindPage(ctx context.Context, pageNum int, pageSize int) (int, []*User, error)
 	}
 
 	customUserModel struct {
@@ -21,7 +21,7 @@ type (
 	}
 )
 
-func (m *customUserModel) FindPage(ctx context.Context, pageNum int, pageSize int) ([]*User, error) {
+func (m *customUserModel) FindPage(ctx context.Context, pageNum int, pageSize int) (int, []*User, error) {
 	if pageSize < 1 || pageSize > 100 {
 		pageSize = 10
 	}
@@ -29,7 +29,10 @@ func (m *customUserModel) FindPage(ctx context.Context, pageNum int, pageSize in
 	var resp []*User
 	err := m.conn.QueryRowsCtx(ctx, &resp, query, (pageNum-1)*pageSize, pageSize)
 
-	return resp, err
+	var count int
+	err = m.conn.QueryRowCtx(ctx, &count, "select count(*) from user")
+
+	return count, resp, err
 }
 
 // NewUserModel returns a model for the database table.

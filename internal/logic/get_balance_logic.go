@@ -41,7 +41,7 @@ func (l *GetBalanceLogic) GetBalance(req *types.GetBalanceRequest) (resp *types.
 			dailyLimit = &model.DailyLimit{
 				UserId: meId,
 				Date:   date,
-				Limit:  5000,
+				Limit:  dbUser.DailyLimit,
 			}
 			_, err = l.svcCtx.DailyLimitModel.Insert(l.ctx, dailyLimit)
 			if err != nil {

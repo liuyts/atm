@@ -1,9 +1,7 @@
 package logic
 
 import (
-	"ATM/internal/common/consts"
 	"context"
-	"encoding/json"
 	"github.com/jinzhu/copier"
 
 	"ATM/internal/svc"
@@ -27,9 +25,7 @@ func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfo
 }
 
 func (l *UserInfoLogic) UserInfo(req *types.UserInfoRequest) (resp *types.UserInfoResponse, err error) {
-	meId, _ := l.ctx.Value(consts.UserId).(json.Number).Int64()
-
-	dbUser, err := l.svcCtx.UserModel.FindOne(l.ctx, meId)
+	dbUser, err := l.svcCtx.UserModel.FindOne(l.ctx, req.UserId)
 	if err != nil {
 		return
 	}
