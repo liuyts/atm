@@ -18,6 +18,12 @@ service atm {
 	)
 	@handler UserLogin
 	post /api/atm/user/login (UserLoginRequest) returns (UserLoginResponse)
+	
+	@doc (
+		summary :"改变银行卡状态"
+	)
+	@handler ChangeStatus
+	post /api/atm/user/status (ChangeStatusRequest) returns (ChangeStatusResponse)
 }
 
 @server(
@@ -66,6 +72,16 @@ service atm {
 	@handler GetBalance
 	get /api/atm/user/info/balance (GetBalanceRequest) returns (GetBalanceResponse)
 }
+
+type (
+	ChangeStatusRequest {
+		AccountNumber string `json:"account_number"`
+		Status        string `json:"status"`
+	}
+
+	ChangeStatusResponse {
+	}
+)
 
 type (
 	GetBalanceRequest {

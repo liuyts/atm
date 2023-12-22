@@ -42,6 +42,10 @@ func (l *UserLoginLogic) UserLogin(req *types.UserLoginRequest) (resp *types.Use
 	if !utils.VerifyPassword(req.Password, dbUser.Password) {
 		return nil, errors.New("密码错误，请重新输入")
 	}
+	// 该卡是否被管理员封禁
+	if dbUser.Status == "封禁" {
+		return nil, errors.New("银行卡已被封禁，请联系管理员")
+	}
 	// 生成token，登录成功
 	auth := l.svcCtx.Config.Auth
 	now := time.Now().Unix()
