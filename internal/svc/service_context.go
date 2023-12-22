@@ -12,6 +12,7 @@ type ServiceContext struct {
 	Tx               sqlx.SqlConn
 	UserModel        model.UserModel
 	TransactionModel model.TransactionModel
+	DailyLimitModel  model.DailyLimitModel
 	RedisClient      *redis.Redis
 }
 
@@ -21,6 +22,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Tx:               sqlx.NewMysql(c.MySQLConf.DataSource),
 		UserModel:        model.NewUserModel(sqlx.NewMysql(c.MySQLConf.DataSource)),
 		TransactionModel: model.NewTransactionModel(sqlx.NewMysql(c.MySQLConf.DataSource)),
+		DailyLimitModel:  model.NewDailyLimitModel(sqlx.NewMysql(c.MySQLConf.DataSource)),
 		RedisClient:      redis.MustNewRedis(c.RedisConf),
 	}
 }

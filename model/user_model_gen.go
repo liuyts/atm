@@ -41,12 +41,12 @@ type (
 	User struct {
 		Id            int64     `db:"id"`
 		Name          string    `db:"name"`
-		IdCard        string    `db:"id_card"`
 		AccountNumber string    `db:"account_number"`
 		Phone         string    `db:"phone"`
 		Password      string    `db:"password"`
 		BankName      string    `db:"bank_name"`
 		Balance       float64   `db:"balance"`
+		IdCard        string    `db:"id_card"`
 		CreateTime    time.Time `db:"create_time"`
 		UpdateTime    time.Time `db:"update_time"`
 	}
@@ -95,25 +95,25 @@ func (m *defaultUserModel) FindOneByAccountNumber(ctx context.Context, accountNu
 
 func (m *defaultUserModel) Insert(ctx context.Context, data *User) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.Name, data.IdCard, data.AccountNumber, data.Phone, data.Password, data.BankName, data.Balance)
+	ret, err := m.conn.ExecCtx(ctx, query, data.Name, data.AccountNumber, data.Phone, data.Password, data.BankName, data.Balance, data.IdCard)
 	return ret, err
 }
 
 func (m *defaultUserModel) TxInsert(ctx context.Context, tx sqlx.Session, data *User) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
-	ret, err := tx.ExecCtx(ctx, query, data.Name, data.IdCard, data.AccountNumber, data.Phone, data.Password, data.BankName, data.Balance)
+	ret, err := tx.ExecCtx(ctx, query, data.Name, data.AccountNumber, data.Phone, data.Password, data.BankName, data.Balance, data.IdCard)
 	return ret, err
 }
 
 func (m *defaultUserModel) Update(ctx context.Context, newData *User) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, newData.Name, newData.IdCard, newData.AccountNumber, newData.Phone, newData.Password, newData.BankName, newData.Balance, newData.Id)
+	_, err := m.conn.ExecCtx(ctx, query, newData.Name, newData.AccountNumber, newData.Phone, newData.Password, newData.BankName, newData.Balance, newData.IdCard, newData.Id)
 	return err
 }
 
 func (m *defaultUserModel) TxUpdate(ctx context.Context, tx sqlx.Session, newData *User) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userRowsWithPlaceHolder)
-	_, err := tx.ExecCtx(ctx, query, newData.Name, newData.IdCard, newData.AccountNumber, newData.Phone, newData.Password, newData.BankName, newData.Balance, newData.Id)
+	_, err := tx.ExecCtx(ctx, query, newData.Name, newData.AccountNumber, newData.Phone, newData.Password, newData.BankName, newData.Balance, newData.IdCard, newData.Id)
 	return err
 }
 

@@ -64,6 +64,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/api/atm/money/transfer",
 				Handler: TransferMoneyHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/api/atm/user/info/balance",
+				Handler: GetBalanceHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)

@@ -59,7 +59,23 @@ service atm {
 	)
 	@handler TransferMoney
 	post /api/atm/money/transfer (TransferMoneyRequest) returns (TransferMoneyResponse)
+	
+	@doc(
+		summary: "查询余额"
+	)
+	@handler GetBalance
+	get /api/atm/user/info/balance (GetBalanceRequest) returns (GetBalanceResponse)
 }
+
+type (
+	GetBalanceRequest {
+	}
+	GetBalanceResponse {
+		TotalBalance float64 `json:"total_balance"`
+		DailyLimit   float64 `json:"daily_limit"`
+		Date         string  `json:"date"`
+	}
+)
 
 type (
 	ChangePasswordRequest {

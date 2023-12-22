@@ -68,6 +68,13 @@ func (l *TransferMoneyLogic) TransferMoney(req *types.TransferMoneyRequest) (res
 			UserId:      meId,
 		})
 
+		_, err = l.svcCtx.TransactionModel.TxInsert(l.ctx, session, &model.Transaction{
+			Amount:      req.Amount,
+			Type:        consts.TransactionTypeTransfer,
+			Description: fmt.Sprintf("%v(%v)转账给你%v元", meUser.Name, meUser.AccountNumber, req.Amount),
+			UserId:      toUser.Id,
+		})
+
 		return
 	})
 
