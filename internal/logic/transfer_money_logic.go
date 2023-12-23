@@ -79,6 +79,9 @@ func (l *TransferMoneyLogic) TransferMoney(req *types.TransferMoneyRequest) (res
 			Description: fmt.Sprintf("你转账给%v(%v)%v元", toUser.Name, toUser.AccountNumber, req.Amount),
 			UserId:      meId,
 		})
+		if err != nil {
+			return
+		}
 
 		_, err = l.svcCtx.TransactionModel.TxInsert(l.ctx, session, &model.Transaction{
 			Amount:      req.Amount,
@@ -86,6 +89,16 @@ func (l *TransferMoneyLogic) TransferMoney(req *types.TransferMoneyRequest) (res
 			Description: fmt.Sprintf("%v(%v)转账给你%v元", meUser.Name, meUser.AccountNumber, req.Amount),
 			UserId:      toUser.Id,
 		})
+		if err != nil {
+			return
+		}
+
+		// 更新每日限额
+		dailyLimit.Limit -= req.Amount
+		err = l.svcCtx.DailyLimitModel.TxUpdate(l.ctx, session, dailyLimit)
+		if err != nil {
+			return
+		}
 
 		return
 	})
