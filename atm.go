@@ -1,16 +1,14 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-	"github.com/zeromicro/go-zero/rest/httpx"
-
 	"ATM/internal/config"
 	"ATM/internal/handler"
 	"ATM/internal/svc"
-
+	"flag"
+	"fmt"
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
+	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
 var configFile = flag.String("f", "etc/atm.yaml", "the config file")

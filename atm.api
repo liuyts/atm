@@ -36,18 +36,18 @@ service atm {
 	)
 	@handler UpdateUser
 	post /api/atm/user/update (UpdateUserRequest) returns (UpdateUserResponse)
+	
+	@doc(
+		summary: "用户信息"
+	)
+	@handler UserInfo
+	get /api/atm/user/info (UserInfoRequest) returns (UserInfoResponse)
 }
 
 @server(
 	jwt: Auth
 )
 service atm {
-	@doc(
-		summary: "用户信息"
-	)
-	@handler UserInfo
-	get /api/atm/user/info (UserInfoRequest) returns (UserInfoResponse)
-	
 	@doc(
 		summary: "修改密码"
 	)
